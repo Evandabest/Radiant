@@ -9,6 +9,10 @@ struct RadiantApp: App {
             MenuBarView(controller: controller)
         }
         .menuBarExtraStyle(.window)
+
+        Settings {
+            SettingsView()
+        }
     }
 
     private var menuBarIcon: String {

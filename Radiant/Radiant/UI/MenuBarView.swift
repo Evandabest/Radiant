@@ -44,6 +44,10 @@ struct MenuBarView: View {
 
             Divider()
 
+            SettingsLink {
+                Text("Settings...")
+            }
+
             Button("Quit") {
                 NSApplication.shared.terminate(nil)
             }
