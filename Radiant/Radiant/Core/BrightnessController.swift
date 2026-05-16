@@ -62,7 +62,7 @@ class BrightnessController {
         if level > 0.0 {
             eclipseManager.deactivate()
             // Gamma factor: 1.0 (no change) to ~1.6 (max useful boost)
-            let maxGammaFactor = 1.6
+            let maxGammaFactor = 1.7
             let factor = Float(1.0 + (level * (maxGammaFactor - 1.0)))
 
             if boostManager.isActive {
