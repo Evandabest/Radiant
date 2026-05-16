@@ -21,7 +21,7 @@ class EDRMetalView: MTKView, MTKViewDelegate {
 
         colorPixelFormat = .rgba16Float
         colorspace = CGColorSpace(name: CGColorSpace.extendedLinearDisplayP3)
-        clearColor = MTLClearColor(red: boostFactor, green: boostFactor, blue: boostFactor, alpha: 1.0)
+        clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         preferredFramesPerSecond = 10
 
         if let metalLayer = layer as? CAMetalLayer {
