@@ -5,14 +5,26 @@ class BrightnessController {
     let displayManager = DisplayManager()
     let boostManager = BrightnessOverlayManager()
     let eclipseManager = EclipseOverlayManager()
+    private let settings = AppSettings.shared
 
     var isEnabled = false {
-        didSet { applyState() }
+        didSet {
+            settings.isEnabled = isEnabled
+            applyState()
+        }
     }
 
-    // -1.0 (max eclipse) to 0.0 (normal) to 1.0 (max boost)
     var level: Double = 0.0 {
-        didSet { applyState() }
+        didSet {
+            settings.brightnessLevel = level
+            applyState()
+        }
+    }
+
+    init() {
+        isEnabled = settings.isEnabled
+        level = settings.brightnessLevel
+        if isEnabled { applyState() }
     }
 
     private func applyState() {
