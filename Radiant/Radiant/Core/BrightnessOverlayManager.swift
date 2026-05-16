@@ -7,7 +7,6 @@ class BrightnessOverlayManager {
     private var metalView: EDRMetalView?
     private var cancellables = Set<AnyCancellable>()
 
-    // At 1.0 the overlay is invisible (multiply by 1 = identity)
     var boostFactor: Double = 1.0 {
         didSet {
             metalView?.boostFactor = boostFactor
@@ -35,7 +34,7 @@ class BrightnessOverlayManager {
     }
 
     func tearDown() {
-        metalView?.isPaused = true
+        metalView?.stopRendering()
         metalView?.removeFromSuperview()
         metalView = nil
         overlayWindow?.orderOut(nil)
@@ -55,6 +54,7 @@ class BrightnessOverlayManager {
         window.backgroundColor = .clear
         window.alphaValue = 1.0
         window.hidesOnDeactivate = false
+        window.canHide = false
         window.collectionBehavior = [.canJoinAllSpaces, .transient, .fullScreenAuxiliary, .ignoresCycle]
         window.hasShadow = false
 
@@ -75,6 +75,7 @@ class BrightnessOverlayManager {
     private func reassertOverlay() {
         guard let window = overlayWindow else { return }
         window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
+        window.alphaValue = 1.0
         window.orderFrontRegardless()
     }
 
