@@ -47,11 +47,6 @@ class BrightnessController {
         }
         batteryMonitor.startMonitoring()
 
-        // Create overlay immediately — it starts at identity (invisible)
-        if let screen = NSScreen.main {
-            boostManager.ensureOverlay(on: screen)
-        }
-
         if isEnabled { applyState() }
     }
 
@@ -59,7 +54,7 @@ class BrightnessController {
         guard let screen = NSScreen.main else { return }
 
         if !isEnabled || level == 0.0 {
-            boostManager.resetToIdentity()
+            boostManager.deactivate()
             eclipseManager.deactivate()
             return
         }
@@ -68,11 +63,15 @@ class BrightnessController {
             eclipseManager.deactivate()
             let headroom = displayManager.currentHeadroom
             let maxBoost = max(Double(headroom), 1.0)
-            let factor = 1.0 + (level * (maxBoost - 1.0))
-            boostManager.ensureOverlay(on: screen)
-            boostManager.setBoost(factor)
+            let factor = Float(1.0 + (level * (maxBoost - 1.0)))
+
+            if boostManager.isActive {
+                boostManager.updateBoost(factor)
+            } else {
+                boostManager.activate(on: screen, boostFactor: factor)
+            }
         } else {
-            boostManager.resetToIdentity()
+            boostManager.deactivate()
             eclipseManager.dimLevel = abs(level) * 0.9
             eclipseManager.activate(on: screen)
         }
