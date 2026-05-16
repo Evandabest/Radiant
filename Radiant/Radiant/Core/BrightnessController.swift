@@ -1,6 +1,6 @@
 import AppKit
 
-@Observable
+@MainActor @Observable
 class BrightnessController {
     let displayManager = DisplayManager()
     let boostManager = BrightnessOverlayManager()

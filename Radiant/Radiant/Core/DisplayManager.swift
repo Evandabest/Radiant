@@ -1,7 +1,7 @@
 import AppKit
 import Combine
 
-@Observable
+@MainActor @Observable
 class DisplayManager {
     var currentScreen: NSScreen? = NSScreen.main
     var maxEDRHeadroom: CGFloat = 1.0
