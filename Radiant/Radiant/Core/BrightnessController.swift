@@ -5,7 +5,11 @@ class BrightnessController {
     let displayManager = DisplayManager()
     let boostManager = BrightnessOverlayManager()
     let eclipseManager = EclipseOverlayManager()
+    let hotkeyManager = HotkeyManager()
+    let batteryMonitor = BatteryMonitor()
     private let settings = AppSettings.shared
+
+    private var wasEnabledBeforeBattery = false
 
     var isEnabled = false {
         didSet {
@@ -24,6 +28,25 @@ class BrightnessController {
     init() {
         isEnabled = settings.isEnabled
         level = settings.brightnessLevel
+
+        hotkeyManager.onToggle = { [weak self] in
+            guard let self, settings.globalHotkeyEnabled else { return }
+            self.isEnabled.toggle()
+        }
+        hotkeyManager.register()
+
+        batteryMonitor.onBatteryStateChanged = { [weak self] onBattery in
+            guard let self, settings.disableOnBattery else { return }
+            if onBattery && self.isEnabled {
+                self.wasEnabledBeforeBattery = true
+                self.isEnabled = false
+            } else if !onBattery && self.wasEnabledBeforeBattery {
+                self.wasEnabledBeforeBattery = false
+                self.isEnabled = true
+            }
+        }
+        batteryMonitor.startMonitoring()
+
         if isEnabled { applyState() }
     }
 
