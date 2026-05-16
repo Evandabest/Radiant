@@ -37,7 +37,7 @@ class BrightnessOverlayManager {
     func tearDown() {
         watchdogTimer?.invalidate()
         watchdogTimer = nil
-        metalView?.stopRendering()
+        cancellables.removeAll()
         metalView?.removeFromSuperview()
         metalView = nil
         overlayWindow?.orderOut(nil)
@@ -47,7 +47,7 @@ class BrightnessOverlayManager {
     private func createOverlayWindow(on screen: NSScreen) {
         let window = NSWindow(
             contentRect: screen.frame,
-            styleMask: .borderless,
+            styleMask: [.fullSizeContentView, .borderless],
             backing: .buffered,
             defer: false
         )
@@ -59,16 +59,13 @@ class BrightnessOverlayManager {
         window.hidesOnDeactivate = false
         window.canHide = false
         window.isReleasedWhenClosed = false
-        window.sharingType = .none
-        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]
         window.hasShadow = false
+        window.collectionBehavior = [.stationary, .canJoinAllSpaces, .ignoresCycle, .fullScreenAuxiliary]
 
-        let metal = EDRMetalView(frame: window.contentView!.bounds)
+        let metal = EDRMetalView(frame: window.frame, multiplyCompositing: true)
         metal.autoresizingMask = [.width, .height]
         metal.boostFactor = 1.0
-        window.contentView?.addSubview(metal)
-        window.contentView?.wantsLayer = true
-        window.contentView?.layer?.compositingFilter = "multiply"
+        window.contentView = metal
 
         window.orderFrontRegardless()
         overlayWindow = window
@@ -87,18 +84,16 @@ class BrightnessOverlayManager {
                 if !window.isVisible {
                     window.orderFrontRegardless()
                 }
-                window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
             } else if let screen = NSScreen.main {
+                let currentBoost = self.boostFactor
                 self.createOverlayWindow(on: screen)
-                self.metalView?.boostFactor = self.boostFactor
+                self.boostFactor = currentBoost
             }
         }
         RunLoop.main.add(watchdogTimer!, forMode: .common)
     }
 
     private func observeDisplayChanges() {
-        cancellables.removeAll()
-
         NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.screensDidWakeNotification)
             .sink { [weak self] _ in
