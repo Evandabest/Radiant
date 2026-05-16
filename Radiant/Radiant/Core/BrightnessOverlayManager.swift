@@ -6,6 +6,7 @@ class BrightnessOverlayManager {
     private var overlayWindow: NSWindow?
     private var metalView: EDRMetalView?
     private var cancellables = Set<AnyCancellable>()
+    private var isShowing = false
 
     var boostFactor: Double = 1.0 {
         didSet {
@@ -13,20 +14,48 @@ class BrightnessOverlayManager {
         }
     }
 
-    var isActive: Bool {
-        overlayWindow != nil
-    }
+    var isActive: Bool { isShowing }
 
     init() {
         observeDisplayChanges()
     }
 
     func activate(on screen: NSScreen) {
-        guard overlayWindow == nil else {
-            metalView?.boostFactor = boostFactor
-            return
+        if overlayWindow == nil {
+            createOverlayWindow(on: screen)
         }
 
+        metalView?.boostFactor = boostFactor
+        metalView?.isPaused = false
+        isShowing = true
+
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.3
+            overlayWindow?.animator().alphaValue = 1.0
+        }
+    }
+
+    func deactivate() {
+        isShowing = false
+
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.3
+            overlayWindow?.animator().alphaValue = 0.0
+        } completionHandler: { [weak self] in
+            self?.metalView?.isPaused = true
+        }
+    }
+
+    func tearDown() {
+        metalView?.isPaused = true
+        metalView?.removeFromSuperview()
+        metalView = nil
+        overlayWindow?.orderOut(nil)
+        overlayWindow = nil
+        isShowing = false
+    }
+
+    private func createOverlayWindow(on screen: NSScreen) {
         let window = NSWindow(
             contentRect: screen.frame,
             styleMask: .borderless,
@@ -37,12 +66,14 @@ class BrightnessOverlayManager {
         window.ignoresMouseEvents = true
         window.isOpaque = false
         window.backgroundColor = .clear
+        window.alphaValue = 0.0
         window.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
         window.hasShadow = false
 
         let metal = EDRMetalView(frame: window.contentView!.bounds)
         metal.autoresizingMask = [.width, .height]
         metal.boostFactor = boostFactor
+        metal.isPaused = true
         window.contentView?.addSubview(metal)
         window.contentView?.wantsLayer = true
         window.contentView?.layer?.compositingFilter = "multiply"
@@ -52,21 +83,13 @@ class BrightnessOverlayManager {
         metalView = metal
     }
 
-    func deactivate() {
-        metalView?.isPaused = true
-        metalView?.removeFromSuperview()
-        metalView = nil
-        overlayWindow?.orderOut(nil)
-        overlayWindow = nil
-    }
-
     private func observeDisplayChanges() {
         NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.screensDidWakeNotification)
             .sink { [weak self] _ in
                 guard let self, let screen = NSScreen.main else { return }
-                if self.isActive {
-                    self.deactivate()
+                self.tearDown()
+                if self.isShowing {
                     self.activate(on: screen)
                 }
             }
@@ -75,7 +98,7 @@ class BrightnessOverlayManager {
         NotificationCenter.default
             .publisher(for: NSApplication.didChangeScreenParametersNotification)
             .sink { [weak self] _ in
-                guard let self, let screen = NSScreen.main, self.isActive else { return }
+                guard let self, let screen = NSScreen.main else { return }
                 self.overlayWindow?.setFrame(screen.frame, display: true)
             }
             .store(in: &cancellables)
