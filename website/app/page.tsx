@@ -39,7 +39,7 @@ export default function Home() {
             </a>
           </div>
           <p className="text-sm text-zinc-500 mt-2">
-            Requires MacBook Pro with XDR display (M1 Pro or later)
+            Requires MacBook Pro 14&quot; or 16&quot; with M1 Pro/Max, M2 Pro/Max, M3 Pro/Max, or M4 Pro/Max
           </p>
         </section>
 
@@ -132,8 +132,9 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">Download Radiant</h2>
             <p className="text-zinc-400 mb-8">
-              Free for macOS. Requires a MacBook Pro with Liquid Retina XDR
-              display (M1 Pro/Max or later) or Pro Display XDR.
+              Free for macOS. Requires a MacBook Pro 14&quot; or 16&quot; with
+              Liquid Retina XDR display (M1 Pro/Max, M2 Pro/Max, M3 Pro/Max,
+              or M4 Pro/Max) or Pro Display XDR.
             </p>
             <a
               href="#"
@@ -155,15 +156,11 @@ export default function Home() {
               />
               <FAQ
                 question="Which Macs are supported?"
-                answer="MacBook Pro 14-inch and 16-inch models with M1 Pro/Max or later (Liquid Retina XDR display), and the Pro Display XDR."
+                answer="MacBook Pro 14-inch and 16-inch with M1 Pro/Max, M2 Pro/Max, M3 Pro/Max, or M4 Pro/Max (Liquid Retina XDR display), and the Pro Display XDR."
               />
               <FAQ
                 question="Does it work on MacBook Air?"
                 answer="No. MacBook Air displays max out at ~500 nits and lack XDR capability. There's no additional brightness to unlock."
-              />
-              <FAQ
-                question="How is this different from Vivid?"
-                answer="Radiant is free and open source. It uses the same underlying display technology but costs nothing."
               />
               <FAQ
                 question="Does it affect battery life?"
@@ -174,9 +171,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-zinc-500">
-        <p>Radiant is free and open source.</p>
-      </footer>
+      <footer className="border-t border-white/10 px-6 py-8" />
     </div>
   );
 }
