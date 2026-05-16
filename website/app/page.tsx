@@ -1,3 +1,5 @@
+import { MacbookShowcase } from "./macbook-showcase";
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -42,6 +44,8 @@ export default function Home() {
             Requires MacBook Pro 14&quot; or 16&quot; with M1 Pro/Max, M2 Pro/Max, M3 Pro/Max, or M4 Pro/Max
           </p>
         </section>
+
+        <MacbookShowcase />
 
         <section className="px-6 py-24 border-t border-white/10">
           <div className="max-w-5xl mx-auto">
