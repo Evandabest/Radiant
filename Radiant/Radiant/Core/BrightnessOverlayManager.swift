@@ -6,37 +6,41 @@ class BrightnessOverlayManager {
     private var overlayWindow: NSWindow?
     private var metalView: EDRMetalView?
     private var cancellables = Set<AnyCancellable>()
-    private var watchdogTimer: Timer?
+    private var pollTimer: Timer?
+    let gammaManager = GammaManager()
 
-    var boostFactor: Double = 1.0 {
-        didSet {
-            metalView?.boostFactor = boostFactor
-        }
-    }
+    private var currentFactor: Float = 1.0
+    private let edrReadyThreshold = 1.05
 
     var isActive: Bool {
         overlayWindow != nil
     }
 
-    func ensureOverlay(on screen: NSScreen) {
-        guard overlayWindow == nil else {
-            overlayWindow?.setFrame(screen.frame, display: true)
-            return
+    func activate(on screen: NSScreen, boostFactor: Float) {
+        currentFactor = boostFactor
+
+        if overlayWindow == nil {
+            createEDRTrigger(on: screen)
         }
-        createOverlayWindow(on: screen)
+
+        let displayId = displayIdForScreen(screen)
+        gammaManager.captureBaseline(for: displayId)
+        startPolling(screen: screen)
     }
 
-    func setBoost(_ factor: Double) {
-        boostFactor = factor
+    func updateBoost(_ factor: Float) {
+        currentFactor = factor
+        gammaManager.applyBoost(factor)
     }
 
-    func resetToIdentity() {
-        boostFactor = 1.0
+    func deactivate() {
+        pollTimer?.invalidate()
+        pollTimer = nil
+        gammaManager.restore()
+        tearDownOverlay()
     }
 
-    func tearDown() {
-        watchdogTimer?.invalidate()
-        watchdogTimer = nil
+    func tearDownOverlay() {
         cancellables.removeAll()
         metalView?.removeFromSuperview()
         metalView = nil
@@ -44,14 +48,16 @@ class BrightnessOverlayManager {
         overlayWindow = nil
     }
 
-    private func createOverlayWindow(on screen: NSScreen) {
+    private func createEDRTrigger(on screen: NSScreen) {
+        let rect = NSRect(x: screen.frame.origin.x, y: screen.frame.maxY - 1, width: 1, height: 1)
+
         let window = NSWindow(
-            contentRect: screen.frame,
-            styleMask: [.fullSizeContentView, .borderless],
+            contentRect: rect,
+            styleMask: [],
             backing: .buffered,
             defer: false
         )
-        window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
+        window.level = .screenSaver
         window.ignoresMouseEvents = true
         window.isOpaque = false
         window.backgroundColor = .clear
@@ -60,65 +66,36 @@ class BrightnessOverlayManager {
         window.canHide = false
         window.isReleasedWhenClosed = false
         window.hasShadow = false
-        window.collectionBehavior = [.stationary, .canJoinAllSpaces, .ignoresCycle, .fullScreenAuxiliary]
+        window.collectionBehavior = [.stationary, .canJoinAllSpaces, .ignoresCycle]
 
-        let metal = EDRMetalView(frame: window.frame, multiplyCompositing: true)
-        metal.autoresizingMask = [.width, .height]
-        metal.boostFactor = 1.0
+        let metal = EDRMetalView(frame: NSRect(x: 0, y: 0, width: 1, height: 1))
         window.contentView = metal
 
         window.orderFrontRegardless()
         overlayWindow = window
         metalView = metal
-
-        startWatchdog()
-        observeDisplayChanges()
     }
 
-    private func startWatchdog() {
-        watchdogTimer?.invalidate()
-        watchdogTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+    private func startPolling(screen: NSScreen) {
+        pollTimer?.invalidate()
+        pollTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
             guard let self else { return }
+            guard let screen = NSScreen.main else { return }
 
-            if let window = self.overlayWindow {
-                if !window.isVisible {
-                    window.orderFrontRegardless()
-                }
-            } else if let screen = NSScreen.main {
-                let currentBoost = self.boostFactor
-                self.createOverlayWindow(on: screen)
-                self.boostFactor = currentBoost
+            let headroom = screen.maximumExtendedDynamicRangeColorComponentValue
+            if Double(headroom) > self.edrReadyThreshold {
+                self.gammaManager.applyBoost(self.currentFactor)
+            }
+
+            if let window = self.overlayWindow, !window.isVisible {
+                window.orderFrontRegardless()
             }
         }
-        RunLoop.main.add(watchdogTimer!, forMode: .common)
+        RunLoop.main.add(pollTimer!, forMode: .common)
     }
 
-    private func observeDisplayChanges() {
-        NSWorkspace.shared.notificationCenter
-            .publisher(for: NSWorkspace.screensDidWakeNotification)
-            .sink { [weak self] _ in
-                guard let self, let screen = NSScreen.main else { return }
-                let currentBoost = self.boostFactor
-                self.tearDown()
-                self.createOverlayWindow(on: screen)
-                self.boostFactor = currentBoost
-            }
-            .store(in: &cancellables)
-
-        NSWorkspace.shared.notificationCenter
-            .publisher(for: NSWorkspace.activeSpaceDidChangeNotification)
-            .sink { [weak self] _ in
-                self?.overlayWindow?.orderFrontRegardless()
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: NSApplication.didChangeScreenParametersNotification)
-            .sink { [weak self] _ in
-                guard let self, let screen = NSScreen.main else { return }
-                self.overlayWindow?.setFrame(screen.frame, display: true)
-                self.overlayWindow?.orderFrontRegardless()
-            }
-            .store(in: &cancellables)
+    private func displayIdForScreen(_ screen: NSScreen) -> CGDirectDisplayID {
+        let key = NSDeviceDescriptionKey(rawValue: "NSScreenNumber")
+        return screen.deviceDescription[key] as? CGDirectDisplayID ?? CGMainDisplayID()
     }
 }
