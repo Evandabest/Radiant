@@ -17,7 +17,9 @@ class BatteryMonitor {
         runLoopSource = IOPSNotificationCreateRunLoopSource({ context in
             guard let context else { return }
             let monitor = Unmanaged<BatteryMonitor>.fromOpaque(context).takeUnretainedValue()
-            monitor.onBatteryStateChanged?(monitor.isOnBattery)
+            DispatchQueue.main.async {
+                monitor.onBatteryStateChanged?(monitor.isOnBattery)
+            }
         }, context).takeRetainedValue()
 
         CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, .defaultMode)
