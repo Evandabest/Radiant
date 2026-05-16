@@ -83,6 +83,14 @@ class BrightnessOverlayManager {
         metalView = metal
     }
 
+    private func reassertOverlay() {
+        guard isShowing, let window = overlayWindow else { return }
+        window.level = .screenSaver
+        window.orderFrontRegardless()
+        window.alphaValue = 1.0
+        metalView?.isPaused = false
+    }
+
     private func observeDisplayChanges() {
         NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.screensDidWakeNotification)
@@ -95,11 +103,33 @@ class BrightnessOverlayManager {
             }
             .store(in: &cancellables)
 
+        NSWorkspace.shared.notificationCenter
+            .publisher(for: NSWorkspace.activeSpaceDidChangeNotification)
+            .sink { [weak self] _ in
+                self?.reassertOverlay()
+            }
+            .store(in: &cancellables)
+
+        NSWorkspace.shared.notificationCenter
+            .publisher(for: NSWorkspace.didActivateApplicationNotification)
+            .sink { [weak self] _ in
+                self?.reassertOverlay()
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default
             .publisher(for: NSApplication.didChangeScreenParametersNotification)
             .sink { [weak self] _ in
                 guard let self, let screen = NSScreen.main else { return }
                 self.overlayWindow?.setFrame(screen.frame, display: true)
+                self.reassertOverlay()
+            }
+            .store(in: &cancellables)
+
+        DistributedNotificationCenter.default()
+            .publisher(for: .init("com.apple.screensaver.didStop"))
+            .sink { [weak self] _ in
+                self?.reassertOverlay()
             }
             .store(in: &cancellables)
     }
