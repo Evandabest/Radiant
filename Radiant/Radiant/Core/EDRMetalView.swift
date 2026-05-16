@@ -3,7 +3,6 @@ import MetalKit
 
 class EDRMetalView: MTKView, MTKViewDelegate {
     private var commandQueue: MTLCommandQueue?
-    private var renderTimer: Timer?
 
     var boostFactor: Double = 1.0 {
         didSet {
@@ -11,7 +10,7 @@ class EDRMetalView: MTKView, MTKViewDelegate {
         }
     }
 
-    init(frame: CGRect) {
+    init(frame: CGRect, multiplyCompositing: Bool = false) {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("Metal is not supported on this device")
         }
@@ -20,18 +19,22 @@ class EDRMetalView: MTKView, MTKViewDelegate {
         commandQueue = device.makeCommandQueue()
         delegate = self
 
+        autoResizeDrawable = false
+        drawableSize = CGSize(width: 1, height: 1)
+
         colorPixelFormat = .rgba16Float
         colorspace = CGColorSpace(name: CGColorSpace.extendedLinearDisplayP3)
         clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-
-        isPaused = true
-        enableSetNeedsDisplay = false
+        preferredFramesPerSecond = 5
 
         if let metalLayer = layer as? CAMetalLayer {
             metalLayer.wantsExtendedDynamicRangeContent = true
+            metalLayer.isOpaque = false
+            metalLayer.pixelFormat = .rgba16Float
+            if multiplyCompositing {
+                metalLayer.compositingFilter = "multiply"
+            }
         }
-
-        startRenderTimer()
     }
 
     @available(*, unavailable)
@@ -39,25 +42,9 @@ class EDRMetalView: MTKView, MTKViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func startRenderTimer() {
-        renderTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 10.0, repeats: true) { [weak self] _ in
-            self?.draw()
-        }
-        RunLoop.main.add(renderTimer!, forMode: .common)
-    }
-
-    func stopRendering() {
-        renderTimer?.invalidate()
-        renderTimer = nil
-    }
-
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
 
     func draw(in view: MTKView) {
-        renderFrame()
-    }
-
-    private func renderFrame() {
         guard let drawable = currentDrawable,
               let descriptor = currentRenderPassDescriptor,
               let commandBuffer = commandQueue?.makeCommandBuffer() else { return }
@@ -66,9 +53,5 @@ class EDRMetalView: MTKView, MTKViewDelegate {
         encoder?.endEncoding()
         commandBuffer.present(drawable)
         commandBuffer.commit()
-    }
-
-    deinit {
-        stopRendering()
     }
 }
