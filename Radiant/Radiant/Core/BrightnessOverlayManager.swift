@@ -1,5 +1,6 @@
 import AppKit
 import Combine
+import MetalKit
 
 class BrightnessOverlayManager {
     private var overlayWindow: NSWindow?
