@@ -1,14 +1,7 @@
 import SwiftUI
 
-class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
-    }
-}
-
 @main
 struct RadiantApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var controller = BrightnessController()
 
     var body: some Scene {
