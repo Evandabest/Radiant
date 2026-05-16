@@ -7,7 +7,7 @@ class EclipseOverlayManager {
 
     var dimLevel: Double = 0.0 {
         didSet {
-            targetAlpha = min(max(dimLevel, 0.0), 0.9)
+            targetAlpha = min(max(dimLevel, 0.0), 0.95)
             if isShowing {
                 overlayWindow?.alphaValue = targetAlpha
             }
