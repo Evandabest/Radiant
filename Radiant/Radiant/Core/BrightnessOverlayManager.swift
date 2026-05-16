@@ -6,6 +6,7 @@ class BrightnessOverlayManager {
     private var overlayWindow: NSWindow?
     private var metalView: EDRMetalView?
     private var cancellables = Set<AnyCancellable>()
+    private var watchdogTimer: Timer?
 
     var boostFactor: Double = 1.0 {
         didSet {
@@ -34,6 +35,8 @@ class BrightnessOverlayManager {
     }
 
     func tearDown() {
+        watchdogTimer?.invalidate()
+        watchdogTimer = nil
         metalView?.stopRendering()
         metalView?.removeFromSuperview()
         metalView = nil
@@ -55,7 +58,9 @@ class BrightnessOverlayManager {
         window.alphaValue = 1.0
         window.hidesOnDeactivate = false
         window.canHide = false
-        window.collectionBehavior = [.canJoinAllSpaces, .transient, .fullScreenAuxiliary, .ignoresCycle]
+        window.isReleasedWhenClosed = false
+        window.sharingType = .none
+        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]
         window.hasShadow = false
 
         let metal = EDRMetalView(frame: window.contentView!.bounds)
@@ -69,14 +74,26 @@ class BrightnessOverlayManager {
         overlayWindow = window
         metalView = metal
 
+        startWatchdog()
         observeDisplayChanges()
     }
 
-    private func reassertOverlay() {
-        guard let window = overlayWindow else { return }
-        window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
-        window.alphaValue = 1.0
-        window.orderFrontRegardless()
+    private func startWatchdog() {
+        watchdogTimer?.invalidate()
+        watchdogTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+            guard let self else { return }
+
+            if let window = self.overlayWindow {
+                if !window.isVisible {
+                    window.orderFrontRegardless()
+                }
+                window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
+            } else if let screen = NSScreen.main {
+                self.createOverlayWindow(on: screen)
+                self.metalView?.boostFactor = self.boostFactor
+            }
+        }
+        RunLoop.main.add(watchdogTimer!, forMode: .common)
     }
 
     private func observeDisplayChanges() {
@@ -96,14 +113,7 @@ class BrightnessOverlayManager {
         NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.activeSpaceDidChangeNotification)
             .sink { [weak self] _ in
-                self?.reassertOverlay()
-            }
-            .store(in: &cancellables)
-
-        NSWorkspace.shared.notificationCenter
-            .publisher(for: NSWorkspace.didActivateApplicationNotification)
-            .sink { [weak self] _ in
-                self?.reassertOverlay()
+                self?.overlayWindow?.orderFrontRegardless()
             }
             .store(in: &cancellables)
 
@@ -112,7 +122,7 @@ class BrightnessOverlayManager {
             .sink { [weak self] _ in
                 guard let self, let screen = NSScreen.main else { return }
                 self.overlayWindow?.setFrame(screen.frame, display: true)
-                self.reassertOverlay()
+                self.overlayWindow?.orderFrontRegardless()
             }
             .store(in: &cancellables)
     }
