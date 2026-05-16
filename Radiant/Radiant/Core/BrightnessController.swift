@@ -61,9 +61,9 @@ class BrightnessController {
 
         if level > 0.0 {
             eclipseManager.deactivate()
-            let headroom = displayManager.currentHeadroom
-            let maxBoost = max(Double(headroom), 1.0)
-            let factor = Float(1.0 + (level * (maxBoost - 1.0)))
+            // Gamma factor: 1.0 (no change) to ~1.6 (max useful boost)
+            let maxGammaFactor = 1.6
+            let factor = Float(1.0 + (level * (maxGammaFactor - 1.0)))
 
             if boostManager.isActive {
                 boostManager.updateBoost(factor)
@@ -72,7 +72,7 @@ class BrightnessController {
             }
         } else {
             boostManager.deactivate()
-            eclipseManager.dimLevel = abs(level) * 0.9
+            eclipseManager.dimLevel = abs(level) * 0.95
             eclipseManager.activate(on: screen)
         }
     }
