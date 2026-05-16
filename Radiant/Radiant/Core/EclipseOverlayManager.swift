@@ -51,12 +51,13 @@ class EclipseOverlayManager {
             backing: .buffered,
             defer: false
         )
-        window.level = .screenSaver
+        window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
         window.ignoresMouseEvents = true
         window.isOpaque = false
         window.backgroundColor = .black
         window.alphaValue = 0.0
-        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
+        window.hidesOnDeactivate = false
+        window.collectionBehavior = [.canJoinAllSpaces, .transient, .fullScreenAuxiliary, .ignoresCycle]
         window.hasShadow = false
 
         window.orderFrontRegardless()
