@@ -6,44 +6,32 @@ class BrightnessOverlayManager {
     private var overlayWindow: NSWindow?
     private var metalView: EDRMetalView?
     private var cancellables = Set<AnyCancellable>()
-    private var isShowing = false
 
+    // At 1.0 the overlay is invisible (multiply by 1 = identity)
     var boostFactor: Double = 1.0 {
         didSet {
             metalView?.boostFactor = boostFactor
         }
     }
 
-    var isActive: Bool { isShowing }
-
-    init() {
-        observeDisplayChanges()
+    var isActive: Bool {
+        overlayWindow != nil
     }
 
-    func activate(on screen: NSScreen) {
-        if overlayWindow == nil {
-            createOverlayWindow(on: screen)
+    func ensureOverlay(on screen: NSScreen) {
+        guard overlayWindow == nil else {
+            overlayWindow?.setFrame(screen.frame, display: true)
+            return
         }
-
-        metalView?.boostFactor = boostFactor
-        metalView?.isPaused = false
-        isShowing = true
-
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.3
-            overlayWindow?.animator().alphaValue = 1.0
-        }
+        createOverlayWindow(on: screen)
     }
 
-    func deactivate() {
-        isShowing = false
+    func setBoost(_ factor: Double) {
+        boostFactor = factor
+    }
 
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.3
-            overlayWindow?.animator().alphaValue = 0.0
-        } completionHandler: { [weak self] in
-            self?.metalView?.isPaused = true
-        }
+    func resetToIdentity() {
+        boostFactor = 1.0
     }
 
     func tearDown() {
@@ -52,7 +40,6 @@ class BrightnessOverlayManager {
         metalView = nil
         overlayWindow?.orderOut(nil)
         overlayWindow = nil
-        isShowing = false
     }
 
     private func createOverlayWindow(on screen: NSScreen) {
@@ -62,18 +49,18 @@ class BrightnessOverlayManager {
             backing: .buffered,
             defer: false
         )
-        window.level = .screenSaver
+        // Above Mission Control and Exposé
+        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
         window.ignoresMouseEvents = true
         window.isOpaque = false
         window.backgroundColor = .clear
-        window.alphaValue = 0.0
+        window.alphaValue = 1.0
         window.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
         window.hasShadow = false
 
         let metal = EDRMetalView(frame: window.contentView!.bounds)
         metal.autoresizingMask = [.width, .height]
-        metal.boostFactor = boostFactor
-        metal.isPaused = true
+        metal.boostFactor = 1.0
         window.contentView?.addSubview(metal)
         window.contentView?.wantsLayer = true
         window.contentView?.layer?.compositingFilter = "multiply"
@@ -81,25 +68,27 @@ class BrightnessOverlayManager {
         window.orderFrontRegardless()
         overlayWindow = window
         metalView = metal
+
+        observeDisplayChanges()
     }
 
     private func reassertOverlay() {
-        guard isShowing, let window = overlayWindow else { return }
-        window.level = .screenSaver
+        guard let window = overlayWindow else { return }
+        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
         window.orderFrontRegardless()
-        window.alphaValue = 1.0
-        metalView?.isPaused = false
     }
 
     private func observeDisplayChanges() {
+        cancellables.removeAll()
+
         NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.screensDidWakeNotification)
             .sink { [weak self] _ in
                 guard let self, let screen = NSScreen.main else { return }
+                let currentBoost = self.boostFactor
                 self.tearDown()
-                if self.isShowing {
-                    self.activate(on: screen)
-                }
+                self.createOverlayWindow(on: screen)
+                self.boostFactor = currentBoost
             }
             .store(in: &cancellables)
 
@@ -123,13 +112,6 @@ class BrightnessOverlayManager {
                 guard let self, let screen = NSScreen.main else { return }
                 self.overlayWindow?.setFrame(screen.frame, display: true)
                 self.reassertOverlay()
-            }
-            .store(in: &cancellables)
-
-        DistributedNotificationCenter.default()
-            .publisher(for: .init("com.apple.screensaver.didStop"))
-            .sink { [weak self] _ in
-                self?.reassertOverlay()
             }
             .store(in: &cancellables)
     }
