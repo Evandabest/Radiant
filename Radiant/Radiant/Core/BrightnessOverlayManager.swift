@@ -49,13 +49,13 @@ class BrightnessOverlayManager {
             backing: .buffered,
             defer: false
         )
-        // Above Mission Control and Exposé
-        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
+        window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
         window.ignoresMouseEvents = true
         window.isOpaque = false
         window.backgroundColor = .clear
         window.alphaValue = 1.0
-        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
+        window.hidesOnDeactivate = false
+        window.collectionBehavior = [.canJoinAllSpaces, .transient, .fullScreenAuxiliary, .ignoresCycle]
         window.hasShadow = false
 
         let metal = EDRMetalView(frame: window.contentView!.bounds)
@@ -74,7 +74,7 @@ class BrightnessOverlayManager {
 
     private func reassertOverlay() {
         guard let window = overlayWindow else { return }
-        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
+        window.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
         window.orderFrontRegardless()
     }
 
