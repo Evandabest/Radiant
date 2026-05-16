@@ -4,13 +4,7 @@ import MetalKit
 class EDRMetalView: MTKView, MTKViewDelegate {
     private var commandQueue: MTLCommandQueue?
 
-    var boostFactor: Double = 1.0 {
-        didSet {
-            clearColor = MTLClearColor(red: boostFactor, green: boostFactor, blue: boostFactor, alpha: 1.0)
-        }
-    }
-
-    init(frame: CGRect, multiplyCompositing: Bool = false) {
+    init(frame: CGRect) {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("Metal is not supported on this device")
         }
@@ -24,16 +18,13 @@ class EDRMetalView: MTKView, MTKViewDelegate {
 
         colorPixelFormat = .rgba16Float
         colorspace = CGColorSpace(name: CGColorSpace.extendedLinearDisplayP3)
-        clearColor = MTLClearColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        clearColor = MTLClearColor(red: 16.0, green: 16.0, blue: 16.0, alpha: 1.0)
         preferredFramesPerSecond = 5
 
         if let metalLayer = layer as? CAMetalLayer {
             metalLayer.wantsExtendedDynamicRangeContent = true
             metalLayer.isOpaque = false
             metalLayer.pixelFormat = .rgba16Float
-            if multiplyCompositing {
-                metalLayer.compositingFilter = "multiply"
-            }
         }
     }
 
