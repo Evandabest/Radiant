@@ -23,8 +23,7 @@ export default function Home() {
             Unlock your MacBook&apos;s full potential
           </h1>
           <p className="text-lg sm:text-xl text-zinc-400 max-w-xl">
-            Radiant pushes your MacBook Pro XDR display beyond the 500 nit SDR
-            cap. Boost up to full HDR brightness or dim below minimum.
+            Push your XDR display beyond 500 nits. Boost to full HDR brightness or dim below minimum.
           </p>
           <div className="flex gap-4 mt-4">
             <a
