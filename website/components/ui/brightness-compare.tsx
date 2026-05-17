@@ -7,18 +7,18 @@ import {
 
 function BrightnessSlider() {
   return (
-    <div className="absolute top-4 right-4 z-10">
-      <div className="bg-white/15 backdrop-blur-2xl rounded-2xl px-4 py-2.5 flex flex-col items-center gap-1.5 min-w-[180px] border border-white/20 shadow-lg">
-        <span className="text-[10px] font-medium text-white/90 self-start">Display</span>
-        <div className="flex items-center gap-2 w-full">
-          <svg className="w-3 h-3 text-white/60 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <div className="absolute top-2 right-2 z-10">
+      <div className="bg-white/15 backdrop-blur-2xl rounded-xl px-3 py-1.5 flex flex-col gap-1 w-[120px] border border-white/25 shadow-lg">
+        <span className="text-[8px] font-medium text-white/90">Display</span>
+        <div className="flex items-center gap-1.5 w-full">
+          <svg className="w-2.5 h-2.5 text-white/60 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="4" />
             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
           </svg>
-          <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
+          <div className="flex-1 h-[3px] bg-white/20 rounded-full overflow-hidden">
             <div className="h-full w-full bg-white rounded-full" />
           </div>
-          <svg className="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-3 h-3 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="4" />
             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
           </svg>
