@@ -56,32 +56,26 @@ export default function Home() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <FeatureCard
-                icon="☀"
                 title="XDR Boost"
                 description="Push brightness past the macOS SDR limit. Your display can do 1000+ nits — Radiant lets it."
               />
               <FeatureCard
-                icon="🌙"
                 title="Eclipse Mode"
                 description="Dim your screen below the system minimum. Perfect for dark rooms and late night work."
               />
               <FeatureCard
-                icon="⌨"
                 title="Keyboard Shortcut"
                 description="Toggle brightness boost instantly with a global hotkey. No need to open the app."
               />
               <FeatureCard
-                icon="🔋"
                 title="Battery Aware"
                 description="Automatically disables the boost when you unplug. Saves battery when you need it."
               />
               <FeatureCard
-                icon="🎚"
                 title="Variable Control"
                 description="Fine-tune your brightness with a smooth slider from eclipse through normal to full boost."
               />
               <FeatureCard
-                icon="🆓"
                 title="Free Forever"
                 description="No subscriptions, no trials, no paywalls. Radiant is completely free and open source."
               />
@@ -183,17 +177,14 @@ export default function Home() {
 }
 
 function FeatureCard({
-  icon,
   title,
   description,
 }: {
-  icon: string;
   title: string;
   description: string;
 }) {
   return (
     <div className="rounded-2xl border border-white/10 p-6">
-      <div className="text-2xl mb-3">{icon}</div>
       <h3 className="font-semibold text-lg mb-2">{title}</h3>
       <p className="text-sm text-zinc-400">{description}</p>
     </div>
