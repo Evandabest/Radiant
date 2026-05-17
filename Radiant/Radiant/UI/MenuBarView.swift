@@ -44,6 +44,10 @@ struct MenuBarView: View {
 
             Divider()
 
+            Button("Check for Updates...") {
+                controller.updateChecker.checkForUpdates(force: true)
+            }
+
             SettingsLink {
                 Text("Settings...")
             }
