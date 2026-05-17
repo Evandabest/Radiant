@@ -1,4 +1,5 @@
 import { MacbookShowcase } from "./macbook-showcase";
+import { CompareSection } from "./compare-section";
 
 export default function Home() {
   return (
@@ -46,6 +47,8 @@ export default function Home() {
         </section>
 
         <MacbookShowcase />
+
+        <CompareSection />
 
         <section className="px-6 py-24 border-t border-white/10">
           <div className="max-w-5xl mx-auto">
