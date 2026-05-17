@@ -26,10 +26,10 @@ export function SplitComparison() {
       {/* Divider line */}
       <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white/40" />
 
-      {/* Brightness slider at max — macOS style */}
-      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
-        <div className="bg-black/70 backdrop-blur-xl rounded-2xl px-4 py-2 flex flex-col items-center gap-1.5 min-w-[180px]">
-          <span className="text-[7px] font-medium text-white/80 self-start">Display</span>
+      {/* Brightness slider at max — macOS liquid glass style */}
+      <div className="absolute top-3 left-3 z-10">
+        <div className="bg-white/15 backdrop-blur-2xl rounded-2xl px-4 py-2 flex flex-col items-center gap-1.5 min-w-[160px] border border-white/20 shadow-lg">
+          <span className="text-[7px] font-medium text-white/90 self-start">Display</span>
           <div className="flex items-center gap-2 w-full">
             <svg className="w-2.5 h-2.5 text-white/60 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="4" />
