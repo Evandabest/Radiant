@@ -43,7 +43,7 @@ export function BrightnessCompare() {
               }}
             />
             <div className="absolute bottom-6 left-6">
-              <span className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-sm font-semibold text-white">
+              <span className="px-4 py-2 rounded-full bg-black/50 backdrop-blur-md text-sm font-semibold text-white">
                 With Radiant
               </span>
             </div>
@@ -59,7 +59,7 @@ export function BrightnessCompare() {
               }}
             />
             <div className="absolute bottom-6 right-6">
-              <span className="px-4 py-2 rounded-full bg-black/40 backdrop-blur-md text-sm font-semibold text-white/70">
+              <span className="px-4 py-2 rounded-full bg-black/50 backdrop-blur-md text-sm font-semibold text-white">
                 Without Radiant
               </span>
             </div>
