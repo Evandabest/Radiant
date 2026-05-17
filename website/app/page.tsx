@@ -21,7 +21,7 @@ export default function Home() {
       </nav>
 
       <main className="flex-1">
-        <section className="flex flex-col items-center justify-center text-center px-6 pt-24 pb-8 gap-6">
+        <section className="flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 gap-6">
           <div className="text-6xl">
             ☀
           </div>
@@ -88,9 +88,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-32 border-t border-white/10">
+        <section className="px-6 py-20 border-t border-white/10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-20">
+            <h2 className="text-4xl font-bold text-center mb-16">
               How it works
             </h2>
             <div className="space-y-12 text-zinc-400 text-lg">
@@ -132,7 +132,7 @@ export default function Home() {
 
         <section
           id="download"
-          className="px-6 py-32 border-t border-white/10"
+          className="px-6 py-20 border-t border-white/10"
         >
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6">Download Radiant</h2>
@@ -151,7 +151,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-32 border-t border-white/10">
+        <section className="px-6 py-20 border-t border-white/10">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-16">FAQ</h2>
             <div className="space-y-10">
