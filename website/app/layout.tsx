@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Radiant — Free XDR Brightness for Mac",
   description:
-    "Unlock the full brightness of your MacBook Pro XDR display. Boost beyond 500 nits or dim below minimum. Free and open source.",
+    "Unlock the full brightness of your MacBook Pro XDR display. Boost beyond 500 nits or dim below minimum.",
   icons: {
     icon: "/icon.svg",
   },
@@ -33,6 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-black text-white">
         {children}
+        <Analytics />
       </body>
     </html>
   );
