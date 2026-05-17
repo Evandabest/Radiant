@@ -22,17 +22,17 @@ export default function Home() {
       </nav>
 
       <main className="flex-1">
-        <section className="flex flex-col items-center justify-center text-center px-6 pt-24 pb-28 gap-6">
-          <div className="text-6xl">
+        <section className="flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-16 sm:pt-24 pb-16 sm:pb-28 gap-5 sm:gap-6">
+          <div className="text-5xl sm:text-6xl">
             ☀
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold tracking-tight max-w-2xl leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-2xl leading-tight">
             Unlock your MacBook&apos;s full potential
           </h1>
           <p className="text-lg sm:text-xl text-zinc-400 max-w-xl">
             Push your XDR display beyond 500 nits. Boost to full HDR brightness or dim below minimum.
           </p>
-          <div className="flex gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 w-full sm:w-auto">
             <DownloadButton
               className="rounded-full bg-white text-black px-8 py-3 text-base font-semibold hover:bg-white/90 transition-colors"
             >
@@ -54,9 +54,9 @@ export default function Home() {
 
         <CompareSection />
 
-        <section className="px-6 py-32 border-t border-white/10">
+        <section className="px-4 sm:px-6 py-16 sm:py-32 border-t border-white/10">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-20">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-20">
               Everything your display can do
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -88,14 +88,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-20 border-t border-white/10">
+        <section className="px-4 sm:px-6 py-16 sm:py-20 border-t border-white/10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-16">
               How it works
             </h2>
-            <div className="space-y-12 text-zinc-400 text-lg">
+            <div className="space-y-8 sm:space-y-12 text-zinc-400 text-base sm:text-lg">
               <div>
-                <h3 className="text-white font-semibold text-2xl mb-3">
+                <h3 className="text-white font-semibold text-xl sm:text-2xl mb-3">
                   Your display is already capable
                 </h3>
                 <p>
@@ -106,7 +106,7 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h3 className="text-white font-semibold text-2xl mb-3">
+                <h3 className="text-white font-semibold text-xl sm:text-2xl mb-3">
                   No hacks, no private APIs
                 </h3>
                 <p>
@@ -117,7 +117,7 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h3 className="text-white font-semibold text-2xl mb-3">
+                <h3 className="text-white font-semibold text-xl sm:text-2xl mb-3">
                   Lightweight and unobtrusive
                 </h3>
                 <p>
@@ -132,11 +132,11 @@ export default function Home() {
 
         <section
           id="download"
-          className="px-6 py-20 border-t border-white/10"
+          className="px-4 sm:px-6 py-16 sm:py-20 border-t border-white/10"
         >
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">Download Radiant</h2>
-            <p className="text-zinc-400 text-lg mb-10">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Download Radiant</h2>
+            <p className="text-zinc-400 text-base sm:text-lg mb-10">
               Free for macOS. Requires a MacBook Pro 14&quot; or 16&quot; with
               Liquid Retina XDR display (M1 Pro/Max, M2 Pro/Max, M3 Pro/Max,
               or M4 Pro/Max) or Pro Display XDR.
@@ -150,9 +150,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-20 border-t border-white/10">
+        <section className="px-4 sm:px-6 py-16 sm:py-20 border-t border-white/10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-16">FAQ</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-16">FAQ</h2>
             <div className="space-y-10">
               <FAQ
                 question="Will this damage my display?"

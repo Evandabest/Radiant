@@ -65,7 +65,7 @@ export function BrightnessCompare() {
             </div>
           </div>
         }
-        style={{ height: "500px" }}
+        style={{ height: "clamp(250px, 50vw, 500px)" }}
       />
     </div>
   );
