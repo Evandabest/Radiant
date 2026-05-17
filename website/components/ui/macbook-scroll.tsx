@@ -29,11 +29,13 @@ export const MacbookScroll = ({
   showGradient,
   title,
   badge,
+  children,
 }: {
   src?: string;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
+  children?: React.ReactNode;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -88,7 +90,9 @@ export const MacbookScroll = ({
         scaleY={scaleY}
         rotate={rotate}
         translate={translate}
-      />
+      >
+        {children}
+      </Lid>
       <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
         <div className="relative h-10 w-full">
           <div className="absolute inset-x-0 mx-auto h-4 w-[80%] bg-[#050505]" />
@@ -121,12 +125,14 @@ export const Lid = ({
   rotate,
   translate,
   src,
+  children,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
   src?: string;
+  children?: React.ReactNode;
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -161,13 +167,17 @@ export const Lid = ({
         className="absolute inset-0 h-96 w-[32rem] rounded-2xl bg-[#010101] p-2"
       >
         <div className="absolute inset-0 rounded-lg bg-[#272729]" />
-        {src && (
+        {children ? (
+          <div className="absolute inset-0 rounded-lg overflow-hidden">
+            {children}
+          </div>
+        ) : src ? (
           <img
             src={src}
             alt="Radiant app screenshot"
             className="absolute inset-0 h-full w-full rounded-lg object-cover object-left-top"
           />
-        )}
+        ) : null}
       </motion.div>
     </div>
   );
