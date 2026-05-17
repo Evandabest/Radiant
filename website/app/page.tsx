@@ -54,9 +54,9 @@ export default function Home() {
 
         <CompareSection />
 
-        <section className="px-6 py-24 border-t border-white/10">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16">
+        <section className="px-6 py-32 border-t border-white/10">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-20">
               Everything your display can do
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -189,9 +189,9 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 p-6">
-      <h3 className="font-semibold text-lg mb-2">{title}</h3>
-      <p className="text-sm text-zinc-400">{description}</p>
+    <div className="rounded-2xl border border-white/10 p-8">
+      <h3 className="font-semibold text-xl mb-3">{title}</h3>
+      <p className="text-base text-zinc-400">{description}</p>
     </div>
   );
 }
