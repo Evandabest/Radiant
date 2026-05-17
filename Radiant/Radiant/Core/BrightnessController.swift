@@ -7,6 +7,7 @@ class BrightnessController {
     let eclipseManager = EclipseOverlayManager()
     let hotkeyManager = HotkeyManager()
     let batteryMonitor = BatteryMonitor()
+    let updateChecker = UpdateChecker()
     private let settings = AppSettings.shared
 
     private var wasEnabledBeforeBattery = false
@@ -46,6 +47,8 @@ class BrightnessController {
             }
         }
         batteryMonitor.startMonitoring()
+
+        updateChecker.checkForUpdates()
 
         if isEnabled { applyState() }
     }
