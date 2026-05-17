@@ -110,10 +110,8 @@ export default function Home() {
                   No hacks, no private APIs
                 </h3>
                 <p>
-                  Radiant uses Apple&apos;s own Extended Dynamic Range (EDR)
-                  system to activate the display&apos;s HDR mode, then adjusts
-                  the display&apos;s gamma response to boost all content. It
-                  operates within the hardware&apos;s rated specifications.
+                  Uses Apple&apos;s EDR system to activate HDR mode and adjust
+                  gamma response. Operates within your hardware&apos;s rated specs.
                 </p>
               </div>
               <div>
