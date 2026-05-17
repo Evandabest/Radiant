@@ -1,5 +1,6 @@
 import { MacbookShowcase } from "./macbook-showcase";
 import { CompareSection } from "./compare-section";
+import { DownloadButton } from "@/components/download-button";
 
 export default function Home() {
   return (
@@ -32,12 +33,11 @@ export default function Home() {
             Push your XDR display beyond 500 nits. Boost to full HDR brightness or dim below minimum.
           </p>
           <div className="flex gap-4 mt-4">
-            <a
-              href="#download"
+            <DownloadButton
               className="rounded-full bg-white text-black px-8 py-3 text-base font-semibold hover:bg-white/90 transition-colors"
             >
               Download for Mac
-            </a>
+            </DownloadButton>
             <a
               href="https://github.com/evandabest/Radiant"
               className="rounded-full border border-white/20 px-8 py-3 text-base font-semibold hover:bg-white/5 transition-colors"
@@ -141,12 +141,11 @@ export default function Home() {
               Liquid Retina XDR display (M1 Pro/Max, M2 Pro/Max, M3 Pro/Max,
               or M4 Pro/Max) or Pro Display XDR.
             </p>
-            <a
-              href="https://github.com/Evandabest/Radiant/releases/download/Beta-release/Radiant.zip"
+            <DownloadButton
               className="inline-block rounded-full bg-white text-black px-10 py-4 text-lg font-semibold hover:bg-white/90 transition-colors"
             >
               Download v1.0
-            </a>
+            </DownloadButton>
             <p className="text-sm text-zinc-500 mt-4">macOS 14 Sonoma or later</p>
           </div>
         </section>
