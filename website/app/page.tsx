@@ -88,14 +88,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-24 border-t border-white/10">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16">
+        <section className="px-6 py-32 border-t border-white/10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-20">
               How it works
             </h2>
-            <div className="space-y-8 text-zinc-400">
+            <div className="space-y-12 text-zinc-400 text-lg">
               <div>
-                <h3 className="text-white font-semibold text-lg mb-2">
+                <h3 className="text-white font-semibold text-2xl mb-3">
                   Your display is already capable
                 </h3>
                 <p>
@@ -106,16 +106,18 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h3 className="text-white font-semibold text-lg mb-2">
+                <h3 className="text-white font-semibold text-2xl mb-3">
                   No hacks, no private APIs
                 </h3>
                 <p>
-                  Uses Apple&apos;s EDR system to activate HDR mode and adjust
-                  gamma response. Operates within your hardware&apos;s rated specs.
+                  Radiant uses Apple&apos;s own Extended Dynamic Range (EDR)
+                  system to activate the display&apos;s HDR mode, then adjusts
+                  the display&apos;s gamma response to boost all content. It
+                  operates within the hardware&apos;s rated specifications.
                 </p>
               </div>
               <div>
-                <h3 className="text-white font-semibold text-lg mb-2">
+                <h3 className="text-white font-semibold text-2xl mb-3">
                   Lightweight and unobtrusive
                 </h3>
                 <p>
@@ -130,11 +132,11 @@ export default function Home() {
 
         <section
           id="download"
-          className="px-6 py-24 border-t border-white/10"
+          className="px-6 py-32 border-t border-white/10"
         >
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">Download Radiant</h2>
-            <p className="text-zinc-400 mb-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-6">Download Radiant</h2>
+            <p className="text-zinc-400 text-lg mb-10">
               Free for macOS. Requires a MacBook Pro 14&quot; or 16&quot; with
               Liquid Retina XDR display (M1 Pro/Max, M2 Pro/Max, M3 Pro/Max,
               or M4 Pro/Max) or Pro Display XDR.
@@ -149,10 +151,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-24 border-t border-white/10">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">FAQ</h2>
-            <div className="space-y-8">
+        <section className="px-6 py-32 border-t border-white/10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-16">FAQ</h2>
+            <div className="space-y-10">
               <FAQ
                 question="Will this damage my display?"
                 answer="No. Radiant operates within Apple's rated specifications for XDR displays. These displays are designed to sustain 1,000 nits full-screen brightness. macOS manages thermal limits automatically."
@@ -197,8 +199,8 @@ function FeatureCard({
 function FAQ({ question, answer }: { question: string; answer: string }) {
   return (
     <div>
-      <h3 className="text-white font-semibold mb-2">{question}</h3>
-      <p className="text-zinc-400">{answer}</p>
+      <h3 className="text-white font-semibold text-xl mb-3">{question}</h3>
+      <p className="text-zinc-400 text-lg">{answer}</p>
     </div>
   );
 }
