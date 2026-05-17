@@ -14,7 +14,7 @@ export function CompareSection() {
         </p>
         <BrightnessCompare />
         <p className="text-xs text-zinc-600 text-center mt-4">
-          Simulated effect for demo purposes only. Actual results depend on your display.
+          Simulated effect for demo purposes only. Actual results can be seen on your display.
         </p>
       </div>
     </section>

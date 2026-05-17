@@ -8,7 +8,7 @@ export function SplitComparison() {
         <img
           src="/wallpaper.jpeg"
           alt=""
-          className="w-full h-full object-cover brightness-[0.85] saturate-[0.9]"
+          className="w-full h-full object-cover brightness-[1.0] saturate-[0.95]"
           draggable={false}
         />
       </div>
@@ -18,7 +18,7 @@ export function SplitComparison() {
         <img
           src="/wallpaper.jpeg"
           alt=""
-          className="w-[200%] h-full object-cover brightness-[1.35] saturate-[1.2]"
+          className="w-[200%] h-full object-cover brightness-[1.5] saturate-[1.25]"
           draggable={false}
         />
       </div>
