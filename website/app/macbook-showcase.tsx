@@ -1,6 +1,7 @@
 "use client";
 
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
+import { SplitComparison } from "@/components/ui/split-comparison";
 
 export function MacbookShowcase() {
   return (
@@ -11,9 +12,10 @@ export function MacbookShowcase() {
             See the difference
           </span>
         }
-        src="/radiant-screenshot.png"
         showGradient={true}
-      />
+      >
+        <SplitComparison />
+      </MacbookScroll>
     </div>
   );
 }
