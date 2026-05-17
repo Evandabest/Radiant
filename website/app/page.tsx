@@ -141,7 +141,7 @@ export default function Home() {
               or M4 Pro/Max) or Pro Display XDR.
             </p>
             <a
-              href="#"
+              href="https://github.com/Evandabest/Radiant/releases/download/Beta-release/Radiant.zip"
               className="inline-block rounded-full bg-white text-black px-10 py-4 text-lg font-semibold hover:bg-white/90 transition-colors"
             >
               Download v1.0
