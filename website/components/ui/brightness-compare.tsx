@@ -15,7 +15,7 @@ export function BrightnessCompare() {
               src="/wallpaper.jpeg"
               alt="With Radiant"
               style={{
-                filter: "brightness(1.15) saturate(1.15)",
+                filter: "brightness(1.35) saturate(1.2)",
               }}
             />
             <div className="absolute top-6 left-6">
@@ -31,7 +31,7 @@ export function BrightnessCompare() {
               src="/wallpaper.jpeg"
               alt="Without Radiant"
               style={{
-                filter: "brightness(0.6) saturate(0.85)",
+                filter: "brightness(0.85) saturate(0.9)",
               }}
             />
             <div className="absolute top-6 right-6">
