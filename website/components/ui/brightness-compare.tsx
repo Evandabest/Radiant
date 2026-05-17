@@ -30,7 +30,7 @@ function BrightnessSlider() {
 
 export function BrightnessCompare() {
   return (
-    <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border border-white/10">
+    <div className="relative w-full max-w-[32rem] mx-auto rounded-2xl overflow-hidden border border-white/10">
       <BrightnessSlider />
       <ReactCompareSlider
         itemOne={
