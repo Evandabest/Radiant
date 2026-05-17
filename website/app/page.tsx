@@ -21,7 +21,7 @@ export default function Home() {
       </nav>
 
       <main className="flex-1">
-        <section className="flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 gap-6">
+        <section className="flex flex-col items-center justify-center text-center px-6 pt-24 pb-28 gap-6">
           <div className="text-6xl">
             ☀
           </div>
