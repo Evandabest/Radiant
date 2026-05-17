@@ -20,7 +20,7 @@ export default function Home() {
             ☀
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold tracking-tight max-w-2xl leading-tight">
-            Unlock your display&apos;s full brightness
+            Unlock your MacBook&apos;s full potential
           </h1>
           <p className="text-lg sm:text-xl text-zinc-400 max-w-xl">
             Radiant pushes your MacBook Pro XDR display beyond the 500 nit SDR
