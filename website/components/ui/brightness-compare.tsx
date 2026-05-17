@@ -7,7 +7,7 @@ import {
 
 function BrightnessSlider() {
   return (
-    <div className="absolute top-4 left-4 z-10">
+    <div className="absolute top-4 right-4 z-10">
       <div className="bg-white/15 backdrop-blur-2xl rounded-2xl px-4 py-2.5 flex flex-col items-center gap-1.5 min-w-[180px] border border-white/20 shadow-lg">
         <span className="text-[10px] font-medium text-white/90 self-start">Display</span>
         <div className="flex items-center gap-2 w-full">
