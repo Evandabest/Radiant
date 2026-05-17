@@ -3,7 +3,7 @@
 import { track } from "@vercel/analytics";
 
 const DOWNLOAD_URL =
-  "https://github.com/Evandabest/Radiant/releases/download/Beta-release/Radiant.zip";
+  "https://github.com/Evandabest/Radiant/releases/download/Beta-release/Radiantv1.0.1-beta.zip";
 
 export function DownloadButton({
   className,
